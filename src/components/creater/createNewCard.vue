@@ -11,7 +11,16 @@ const currentCard = reactive(store.state.card?.currentCard || {}) as RogueCard
 // const instance = getCurrentInstance();
 // defineProps<{ msg: string  }>()
 const professions = reactive([warrior, mage, pastor, ranger, wizard])
-const cost = ref(0);
+const cost = ref(12);
+const costTagType = computed(() => {
+    if (cost.value < 0) {
+        return "danger"
+    } else if (cost.value > 0) {
+        return ""
+    } else {
+        return "success"
+    }
+})
 </script>
 
 
@@ -22,11 +31,16 @@ const cost = ref(0);
         <el-form-item label="角色卡名称">
             <el-input class="content" v-model="currentCard.name" placeholder="请输入角色卡名称"></el-input>
         </el-form-item>
-
         <el-form-item :label="name" v-for="(value, name)  in currentCard.baseAttr" :key="name">
             {{ name }}:{{ currentCard.baseAttr[name] }}
             <el-input-number v-model="currentCard.baseAttr[name]" :min="-1" :max="4" />
         </el-form-item>
+        <el-form-item label="属性点剩余">
+            <el-tag :type="costTagType">{{ cost }}</el-tag>
+        </el-form-item>
+
+        <el-tag type="info">标签三</el-tag>
+        <el-tag type="warning">标签四</el-tag>
 
         <el-form-item label="职业">
             <el-radio-group v-model="currentCard.profession" size="mini">
