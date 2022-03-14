@@ -6,11 +6,11 @@ import router from "src/router";
 
 import { RogueCard } from "src/store/card";
 
-import { warrior } from "src/data/profession"
+import { warrior, mage, pastor, ranger, wizard } from "src/data/profession"
 const currentCard = reactive(store.state.card?.currentCard || {}) as RogueCard
 // const instance = getCurrentInstance();
 // defineProps<{ msg: string  }>()
-const professions = reactive([warrior])
+const professions = reactive([warrior, mage, pastor, ranger, wizard])
 const cost = ref(0);
 </script>
 
