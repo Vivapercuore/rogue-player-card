@@ -15,6 +15,16 @@ export interface RogueCard {
     }
 }
 
+export enum BaseAttr {
+
+    力量 = '力量',
+    敏捷 = '敏捷',
+    体质 = '体质',
+    智力 = '智力',
+    感知 = '感知',
+    魅力 = '魅力',
+}
+
 // localStorage.setItem("cards", JSON.stringify({}))
 
 //单独的state才能推断类型

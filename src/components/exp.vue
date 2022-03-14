@@ -4,8 +4,8 @@ import { ref, reactive, computed, getCurrentInstance } from "vue";
 import store from "src/store";
 import router from "src/router";
 
-const instance = getCurrentInstance();
-// defineProps<{ msg: string  }>()
+// const instance = getCurrentInstance();
+// const props = defineProps({ profession: String })
 
 // const count = ref(0);
 </script>
