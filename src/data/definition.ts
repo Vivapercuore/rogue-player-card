@@ -14,3 +14,23 @@ export enum Materials {
     简易武器 = '简易武器',
     法器 = '法器',
 }
+
+export const defaultCardData = {
+    name: "",
+    profession: "",
+    baseAttr: {
+        力量: 0,
+        敏捷: 0,
+        体质: 0,
+        智力: 0,
+        感知: 0,
+        魅力: 0,
+    },
+    deriveAttr: {
+        AC: 8,
+        移动距离: 5,
+        格挡: 0,
+        招架: 0,
+        敏感范围: '常规'
+    }
+}

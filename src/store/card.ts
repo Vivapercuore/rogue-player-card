@@ -3,10 +3,15 @@ import _ from "lodash";
 import { Commit, Dispatch } from 'vuex'
 import { isOwnKey, NonNeverState, GetState, GetMutationKeyParamMap, GetActionKeyParamMap } from "vuex-with-type"
 import Rootstore from "src/store/index"
+import { defaultCardData } from "src/data/definition"
+import { Skill } from "src/data/profession"
+
 
 export interface RogueCard {
     name: string,
     profession?: string,
+    MaxHP?: number,
+    currentHP?: number,
     baseAttr: {
         力量: number,
         敏捷: number,
@@ -14,11 +19,18 @@ export interface RogueCard {
         智力: number,
         感知: number,
         魅力: number,
-    }
+    },
+    /**衍生属性 */
+    deriveAttr?: {
+        [key: string]: string | number
+    },
+    /**习得技能 */
+    skills?: Array<Skill>
+    /**习得天赋 */
+    talents?: Array<Skill>
 }
 
 export enum BaseAttr {
-
     力量 = '力量',
     敏捷 = '敏捷',
     体质 = '体质',
@@ -59,7 +71,7 @@ const store = {
             s.currentCard = cardData
         },
         createNewCard(s: NonNeverState<typeof state>) {
-            s.currentCard = getDefaultCardData()
+            s.currentCard = _.cloneDeep(defaultCardData)
         }
     },
     actions: { //动作
@@ -94,22 +106,6 @@ const store = {
 
 export default store
 
-
-
-function getDefaultCardData(): RogueCard {
-    return {
-        name: "",
-        profession: "",
-        baseAttr: {
-            力量: 0,
-            敏捷: 0,
-            体质: 0,
-            智力: 0,
-            感知: 0,
-            魅力: 0,
-        }
-    }
-}
 
 function getAllCardsFromLocalStorage(): Array<RogueCard> {
     let cards = []
