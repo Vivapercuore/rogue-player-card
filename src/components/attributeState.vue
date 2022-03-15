@@ -3,24 +3,38 @@ import _ from "lodash";
 import { ref, reactive, computed, getCurrentInstance } from "vue";
 import store from "src/store";
 import router from "src/router";
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { RogueCard } from "src/store/card";
 import { defaultCardData } from "src/data/definition"
+import { Delete } from "@element-plus/icons-vue"
 
 const instance = getCurrentInstance();
 
-// defineProps<{ msg: string  }>()
-if (!store.state.card?.currentCard) {
-    store.dispatch('loadCard')
+type Props = {
+    card: RogueCard | null | undefined
+    showDel: boolean
 }
+const props = withDefaults(defineProps<Props>(), {
+    showDel: false
+})
 
-console.log("当前角色卡:", store.state.card?.currentCard)
+console.log("当前角色卡:", props.card?.name)
 // const count = ref(0);
 
 const currentCard = computed(() => {
-    let currentCard = _.cloneDeep(store.state.card?.currentCard)
+    let currentCard = _.cloneDeep(props.card)
     currentCard = generateDeriveAttr(currentCard as RogueCard)
     return currentCard
 })
+
+const deleteCard = () => {
+    ElMessageBox.confirm("确定要删除角色卡?").then(() => {
+        store.dispatch("deleteCard", currentCard.value)
+        ElMessage.success("好的,删了...")
+    }).catch(() => {
+        ElMessage.info("没删,没删...")
+    })
+}
 
 // 生成衍生属性
 function generateDeriveAttr(cardData: RogueCard): RogueCard {
@@ -41,12 +55,12 @@ function generateDeriveAttr(cardData: RogueCard): RogueCard {
         <el-card>
             <!-- 属性表 -->
             <el-row :gutter="20" border>
+                <el-col class="oprList" :sm="12" :span="24" v-if="props.showDel">
+                    <el-button @click.stop="deleteCard" type="danger" :icon="Delete" circle />
+                </el-col>
                 <el-col :sm="12" :span="24">角色名称: {{ currentCard?.name || '请设定角色卡名称' }}</el-col>
-                <el-col :sm="12" :span="12">职业: {{ currentCard?.profession || '请选择角色卡职业' }}</el-col>
-                <el-col
-                    :sm="12"
-                    :span="12"
-                >HP: {{ currentCard?.MaxHP }}/{{ currentCard?.currentHP }}</el-col>
+                <el-col :sm="6" :span="12">职业: {{ currentCard?.profession || '请选择角色卡职业' }}</el-col>
+                <el-col :sm="6" :span="12">HP: {{ currentCard?.MaxHP }}/{{ currentCard?.currentHP }}</el-col>
                 <!-- 基础属性 -->
                 <el-col
                     v-for="(value, attr) in currentCard?.baseAttr"
@@ -101,5 +115,10 @@ function generateDeriveAttr(cardData: RogueCard): RogueCard {
 
 .row {
     padding: 5px;
+}
+
+.oprList {
+    display: flex;
+    justify-content: flex-end;
 }
 </style>

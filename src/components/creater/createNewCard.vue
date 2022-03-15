@@ -79,7 +79,10 @@ const creatCard = () => {
     checkCrad().then(
         () => {
             store.dispatch("saveCard", currentCard)
-            router.push({ name: "card", params: { cardName: currentCard.name } });
+            ElMessage.success(`卡建好了: ${currentCard.name}`)
+            setTimeout(() => {
+                router.push({ name: "home" });
+            }, 1000);
         }
     ).catch(
         (errmsg) => {
