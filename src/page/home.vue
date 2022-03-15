@@ -16,7 +16,7 @@ const cardsMap = ref(store.state.card?.cards);
 
 const chooseCard = (card: RogueCard) => {
   store.dispatch("changeCard", card);
-  router.push({ name: "card", params: { card: card.name } });
+  router.push({ name: "card", params: { cardName: card.name } });
 };
 
 const createNewCard = () => {
@@ -34,11 +34,16 @@ const createNewCard = () => {
       <h1>选择角色卡:</h1>
       <el-row :gutter="20" v-if="cardsMap">
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="(card, index) in cardsMap">
-          <el-card class="scenarioItem" @click="chooseCard(card)">
-            <el-descriptions :title="card.name">
-              <el-descriptions-item label="描述：">
+          <el-card @click="chooseCard(card)">
+            <el-descriptions :cloumn="1" :title="card.name" direction="vertical" border>
+              <el-descriptions-item label="职业：" :min-width="80">
                 {{
-                  card
+                  card.profession
+                }}
+              </el-descriptions-item>
+              <el-descriptions-item label="基础属性：">
+                {{
+                  card.baseAttr
                 }}
               </el-descriptions-item>
             </el-descriptions>
@@ -46,7 +51,7 @@ const createNewCard = () => {
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">
-          <el-card class="scenarioItem" @click="createNewCard()">
+          <el-card @click="createNewCard()">
             <el-button type="primary" icon="el-icon-circle-plus-outline">新建一张角色卡</el-button>
           </el-card>
         </el-col>
@@ -62,11 +67,5 @@ const createNewCard = () => {
 .page {
   min-height: 100vh;
   background-color: #fff;
-}
-.scenarioItem {
-}
-
-.el-descriptions__body {
-  background-color: transparent;
 }
 </style>

@@ -4,15 +4,19 @@ import { ref, reactive, computed, getCurrentInstance } from "vue";
 import store from "src/store";
 import router from "src/router";
 
-
 import professions, { Profession } from "src/data/profession";
+import { Rarity } from "src/data/definition"
+
+
+import SkillList from "src/components/skillList.vue"
 // const instance = getCurrentInstance();
 const props = defineProps({ profession: String })
 
 const currentProfession = computed((): Profession => {
     return _.find(professions, item => item.name === props.profession) as Profession
 })
-
+//打开技能池
+// const openSkillPool = {}
 // const count = ref(0);
 </script>
 
@@ -28,14 +32,25 @@ const currentProfession = computed((): Profession => {
         <el-row v-if="currentProfession.material?.length">
             <div>特性</div>
             <el-alert
-                v-for="characteristic  in currentProfession.characteristics"
+                v-for="characteristic in currentProfession.characteristics"
                 :title="characteristic.description"
                 type="info"
                 :closable="false"
             />
         </el-row>
+        <el-row v-if="currentProfession.skills?.length">
+            <!-- <el-button size="mini" round icon="el-icon-notebook-2" @click="openSkillPool">查看技能池</el-button> -->
+            <el-collapse class="collapse">
+                <el-collapse-item title="查看技能池" :name="currentProfession.name">
+                    <SkillList :skills="currentProfession.skills" />
+                </el-collapse-item>
+            </el-collapse>
+        </el-row>
     </div>
 </template>
 
 <style scoped lang="less">
+.collapse {
+    width: 100%;
+}
 </style>

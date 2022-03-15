@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import _ from "lodash";
 import { ref, reactive, computed, getCurrentInstance } from "vue";
+import { ElMessage, ElMessageBox } from 'element-plus'
+import type { Action } from 'element-plus'
 import store from "src/store";
 import router from "src/router";
 
@@ -8,8 +10,10 @@ import { RogueCard } from "src/store/card";
 import ProfessionsDesc from "src/components/creater/professionsDesc.vue";
 
 import { warrior, mage, pastor, ranger, wizard } from "src/data/profession"
-const currentCard = reactive(store.state.card?.currentCard || {}) as RogueCard
+
+
 // const instance = getCurrentInstance();
+const currentCard = reactive(store.state.card?.currentCard || {}) as RogueCard
 // defineProps<{ msg: string  }>()
 const professions = reactive([warrior, mage, pastor, ranger, wizard])
 
@@ -27,7 +31,6 @@ const costTagType = computed((): string => {
 //剩余点数
 const costLeft = computed((): number => {
     let costL = cost.value
-
     for (const key in currentCard.baseAttr) {
         if (Object.prototype.hasOwnProperty.call(currentCard.baseAttr, key)) {
             const attrvalue = currentCard.baseAttr[key as keyof typeof currentCard.baseAttr];
@@ -52,6 +55,36 @@ const costMap: { [key: string]: string | number } = {
 //当前属性消耗点数
 const costOn = (value: string | number): string | number => {
     return costMap[value]
+}
+
+const checkCrad = async () => {
+    if (!currentCard.name) {
+        throw "没有设定角色卡名称"
+    }
+    if (costLeft.value < 0) {
+        throw "属性点消耗过高"
+    }
+    if (costLeft.value > 0) {
+        throw "属性点没有用完"
+    }
+    if (!currentCard.profession) {
+        throw "大哥,选个职业"
+    }
+    //通过  throw会阻断
+    return
+}
+
+//建卡校验
+const creatCard = () => {
+    checkCrad().then(
+        () => {
+            store.dispatch("saveCard", currentCard)
+        }
+    ).catch(
+        (errmsg) => {
+            ElMessage.error(errmsg)
+        }
+    )
 }
 
 </script>
@@ -120,8 +153,8 @@ const costOn = (value: string | number): string | number => {
             </el-col>
         </el-row>
         <!-- 初始属性调整 -->
-        <el-row :gutter="20">
-            <el-button type="primary" plain>建卡</el-button>
+        <el-row class="footBtn" :gutter="20">
+            <el-button type="primary" plain @click="creatCard">建卡</el-button>
         </el-row>
     </el-form>
 </template>
@@ -136,5 +169,9 @@ const costOn = (value: string | number): string | number => {
 }
 .attrCost {
     margin-left: 15px;
+}
+
+.footBtn {
+    margin: 20px 0;
 }
 </style>

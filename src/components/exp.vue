@@ -5,6 +5,11 @@ import store from "src/store";
 import router from "src/router";
 
 // const instance = getCurrentInstance();
+
+// type Props={ 
+//         skills:Skill 
+//     }
+// const props =  defineProps<Props>()
 // const props = defineProps({ profession: String })
 
 // const count = ref(0);

@@ -1,16 +1,10 @@
 
 import { BaseAttr } from "src/store/card";
 import warriorSkills from "src/data/warriorSkills"
+import { Rarity, Materials } from "src/data/definition"
 
 
-enum Materials {
-    军用武器 = '军用武器',
-    重型武器 = '重型武器',
-    轻型武器 = '轻型武器',
-    远程武器 = '远程武器',
-    简易武器 = '简易武器',
-    法器 = '法器',
-}
+
 
 
 export const warrior: Profession = {
@@ -26,7 +20,7 @@ export const warrior: Profession = {
             description: "每持用一把武器招架+1"
         }
     ],
-    skills: warriorSkills,
+    skills: warriorSkills as Array<Skill>,
 }
 
 export const mage: Profession = {
@@ -64,11 +58,18 @@ export interface Profession {
     /*允许物品种类*/
     material?: Array<Materials>
     /*技能*/
-    skills: Array<any>
+    skills?: Array<Skill>
 }
 interface Characteristic {
     description: string,
     function?: Function
+}
+
+export interface Skill {
+    name: string,
+    description: string,
+    /**稀有度 */
+    rarity?: Rarity;
 }
 
 

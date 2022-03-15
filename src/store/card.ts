@@ -1,4 +1,5 @@
 
+import _ from "lodash";
 import { Commit, Dispatch } from 'vuex'
 import { isOwnKey, NonNeverState, GetState, GetMutationKeyParamMap, GetActionKeyParamMap } from "vuex-with-type"
 
@@ -44,20 +45,37 @@ const store = {
     //     }
     // },
     mutations: { //信号
-        saveCard() {
-
+        getCard(s: NonNeverState<typeof state>) {
+        },
+        saveCard(s: NonNeverState<typeof state>, cardData: RogueCard) {
+            localStorage.setItem(`card:${cardData.name}`, JSON.stringify(cardData))
+            const i = _.findIndex(s.cards, c => c.name === cardData.name)
+            if (i >= 0) {
+                s.cards.splice(i, 1, cardData)
+            } else {
+                s.cards.push(cardData)
+            }
+        },
+        changeCard(s: NonNeverState<typeof state>, cardData: RogueCard) {
+            s.currentCard = cardData
         },
         createNewCard(s: NonNeverState<typeof state>) {
             s.currentCard = getDefaultCardData()
         }
     },
     actions: { //动作
-        //保存当前卡
-        saveCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }) {
+        getCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardName: string) {
 
         },
-        createNewCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }) {
+        //保存卡
+        saveCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardData: RogueCard) {
+            commit("saveCard", cardData)
+        },
+        createNewCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardData: RogueCard) {
             commit("createNewCard")
+        },
+        changeCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardData: RogueCard) {
+            commit("changeCard", cardData)
         },
         loadCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardName: string) {
             console.log("loadCard", cardName)
@@ -89,8 +107,17 @@ function getDefaultCardData(): RogueCard {
 }
 
 function getAllCardsFromLocalStorage(): Array<RogueCard> {
+    let cards = []
     for (var i = 0; i < localStorage.length; i++) {
-        console.log('key', localStorage.key(i))
+        const cardNamestr = localStorage.key(i)
+        const matchReg = /(?<=card:).*/;
+        const cardName = cardNamestr?.match(matchReg)?.[0]
+        if (cardName) {
+            try {
+                const cardData = JSON.parse(localStorage.getItem(cardNamestr) as string)
+                cards.push(cardData)
+            } catch (error) { }
+        }
     }
-    return []
+    return cards
 }

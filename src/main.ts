@@ -9,6 +9,10 @@ import store from './store/index'
 
 import App from './App.vue'
 
+//按需引用有问题,没有手动调用组件模板的需要手动引入一下
+import 'element-plus/es/components/message/style/css'
+import 'element-plus/es/components/message-box/style/css'
+
 
 const app = createApp(App)
 

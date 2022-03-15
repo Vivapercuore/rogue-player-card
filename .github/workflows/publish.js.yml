@@ -64,6 +64,6 @@ jobs:
         with:
           source-directory: 'dist'
           destination-github-username: 'Vivapercuore'
-          destination-repository-name: 'textGamerIO'
+          destination-repository-name: 'roguePlayerCardIO'
           user-email: vivapercuore@aliyun.com
           target-branch: main
