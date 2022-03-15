@@ -14,6 +14,13 @@ export enum Materials {
     简易武器 = '简易武器',
     法器 = '法器',
 }
+export enum CDLevel {
+    fast = "1回合一次",
+    short = "2回合一次",
+    middle = "4回合一次",
+    long = "每场战斗一次",
+}
+
 
 export const defaultCardData = {
     name: "",

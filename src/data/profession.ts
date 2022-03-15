@@ -1,7 +1,7 @@
 
 import { BaseAttr } from "src/store/card";
 import warriorSkills from "src/data/warriorSkills"
-import { Rarity, Materials } from "src/data/definition"
+import { Rarity, Materials, CDLevel } from "src/data/definition"
 
 
 export const warrior: Profession = {
@@ -67,6 +67,15 @@ export interface Skill {
     description: string,
     /**稀有度 */
     rarity?: Rarity;
+    /**变量 */
+    variable?: Variable,
+    /**等级变量 */
+    level?: { [key: number]: Variable },
+    CDLevel?: CDLevel
+}
+
+interface Variable {
+    [key: string]: string | number
 }
 
 
