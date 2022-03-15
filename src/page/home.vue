@@ -31,6 +31,7 @@ const createNewCard = () => {
       <PageHead />
     </el-header>
     <el-main>
+      <el-alert title="注意,所有数据都保存在你的设备本地,更换设备/清空浏览器缓存,都可能导致数据丢失" type="warning" />
       <h1>选择角色卡:</h1>
       <el-row :gutter="20" v-if="cardsMap">
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="(card, index) in cardsMap">

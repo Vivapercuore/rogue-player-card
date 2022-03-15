@@ -19,7 +19,7 @@ const professions = reactive([warrior, mage, pastor, ranger, wizard])
 
 const cost = ref(12);
 //tag颜色
-const costTagType = computed((): string => {
+const costTagType = computed(() => {
     if (costLeft.value < 0) {
         return "danger"
     } else if (costLeft.value > 0) {

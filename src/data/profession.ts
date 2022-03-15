@@ -4,9 +4,6 @@ import warriorSkills from "src/data/warriorSkills"
 import { Rarity, Materials } from "src/data/definition"
 
 
-
-
-
 export const warrior: Profession = {
     name: "战士",
     lifeDice: "1D8+体质",

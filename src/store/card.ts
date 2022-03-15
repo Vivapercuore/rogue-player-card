@@ -2,6 +2,7 @@
 import _ from "lodash";
 import { Commit, Dispatch } from 'vuex'
 import { isOwnKey, NonNeverState, GetState, GetMutationKeyParamMap, GetActionKeyParamMap } from "vuex-with-type"
+import Rootstore from "src/store/index"
 
 export interface RogueCard {
     name: string,
@@ -45,8 +46,6 @@ const store = {
     //     }
     // },
     mutations: { //信号
-        getCard(s: NonNeverState<typeof state>) {
-        },
         saveCard(s: NonNeverState<typeof state>, cardData: RogueCard) {
             localStorage.setItem(`card:${cardData.name}`, JSON.stringify(cardData))
             const i = _.findIndex(s.cards, c => c.name === cardData.name)
@@ -64,8 +63,8 @@ const store = {
         }
     },
     actions: { //动作
-        getCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardName: string) {
-
+        getCard({ commit, dispatch, rootState }: { commit: Commit, dispatch: Dispatch, rootState: any }, cardName: string): RogueCard | undefined {
+            return _.find(rootState.card.cards, card => card.name === cardName)
         },
         //保存卡
         saveCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardData: RogueCard) {
@@ -77,10 +76,16 @@ const store = {
         changeCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardData: RogueCard) {
             commit("changeCard", cardData)
         },
-        loadCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardName: string) {
-            console.log("loadCard", cardName)
+        async loadCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardName: string) {
             if (cardName === "new") {
                 commit("createNewCard")
+            } else {
+                const cardData = await dispatch("getCard", cardName) as unknown as RogueCard
+                console.log('loadCard', cardName, { cardData })
+                if (!cardData?.name) {
+                    return false
+                }
+                commit("changeCard", cardData)
             }
             return true
         },

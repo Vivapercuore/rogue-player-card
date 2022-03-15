@@ -6,6 +6,7 @@ import router from "src/router";
 import { RogueCard } from "src/store/card";
 
 import CreaterNewCard from "src/components/creater/createNewCard.vue"
+import Grow from "src/components/creater/grow.vue"
 
 
 const currentCard = reactive(store.state.card?.currentCard || {}) as RogueCard
@@ -20,7 +21,7 @@ const currentCard = reactive(store.state.card?.currentCard || {}) as RogueCard
         <el-row class="container">
             <!-- 建立新卡时选择 -->
             <CreaterNewCard v-if="router?.currentRoute?.value?.params?.cardName === 'new'" />
-            <div v-else>旧卡编辑</div>
+            <Grow v-else />
         </el-row>
     </div>
 </template>

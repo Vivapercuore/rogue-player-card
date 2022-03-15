@@ -10,11 +10,9 @@ import AttributeState from "src/components/attributeState.vue";
 import Creater from "src/components/creater/index.vue";
 
 
-console.log(router.currentRoute.value)
-
 //检查是否传入了CardName
 const load = await store.dispatch("loadCard", router?.currentRoute?.value?.params?.cardName)
-console.log({ load })
+console.log({ load, cardName: router?.currentRoute?.value?.params?.cardName })
 // defineProps<{ msg: string  }>()
 
 // const count = ref(0);
