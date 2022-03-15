@@ -13,6 +13,11 @@ import Creater from "src/components/creater/index.vue";
 //检查是否传入了CardName
 const load = await store.dispatch("loadCard", router?.currentRoute?.value?.params?.cardName)
 console.log({ load, cardName: router?.currentRoute?.value?.params?.cardName })
+
+if (!store.state.card?.currentCard) {
+  store.dispatch('loadCard')
+}
+
 // defineProps<{ msg: string  }>()
 
 // const count = ref(0);
@@ -28,7 +33,7 @@ console.log({ load, cardName: router?.currentRoute?.value?.params?.cardName })
       <div v-else>
         <h1 class="title">{{ store.state.card?.currentCard?.name }}</h1>
         <Creater />
-        <AttributeState />
+        <AttributeState :card="store.state.card?.currentCard" />
       </div>
     </el-main>
     <el-footer>

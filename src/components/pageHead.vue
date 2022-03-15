@@ -2,6 +2,12 @@
 import _ from "lodash";
 import { ref, reactive, computed, getCurrentInstance } from "vue";
 import store from "src/store";
+import router from "src/router";
+
+const backHome = () => {
+  router.push({ name: "home" });
+}
+
 
 // const instance = getCurrentInstance();
 // defineProps<{ msg: string  }>()
@@ -11,7 +17,9 @@ import store from "src/store";
 
 <template>
   <div class="header">
-    {{store.state.projectName}} <span class="version">v{{ store.state.version }}</span>
+    <el-button v-if="router.currentRoute.value.name !== 'home'" size="small" @click="backHome">回到首页</el-button>
+    {{ store.state.projectName }}
+    <span class="version">v{{ store.state.version }}</span>
   </div>
 </template>
 

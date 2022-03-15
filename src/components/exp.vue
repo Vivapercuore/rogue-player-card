@@ -9,7 +9,9 @@ import router from "src/router";
 // type Props={ 
 //         skills:Skill 
 //     }
-// const props =  defineProps<Props>()
+// const props = withDefaults( defineProps<Props>(),{
+
+// })
 // const props = defineProps({ profession: String })
 
 // const count = ref(0);

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import router from "src/router";
 import store from "src/store";
 
@@ -8,11 +8,13 @@ import PageFoot from "src/components/pageFoot.vue";
 
 import { RogueCard } from "src/store/card";
 
+import AttributeState from "src/components/attributeState.vue";
+
 // defineProps<{ msg: string  }>()
 
 console.log({ card: store.state.card?.currentCard })
 
-const cardsMap = ref(store.state.card?.cards);
+const cardsMap = computed(() => store.state.card?.cards);
 
 const chooseCard = (card: RogueCard) => {
   store.dispatch("changeCard", card);
@@ -35,20 +37,7 @@ const createNewCard = () => {
       <h1>选择角色卡:</h1>
       <el-row :gutter="20" v-if="cardsMap">
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4" v-for="(card, index) in cardsMap">
-          <el-card @click="chooseCard(card)">
-            <el-descriptions :cloumn="1" :title="card.name" direction="vertical" border>
-              <el-descriptions-item label="职业：" :min-width="80">
-                {{
-                  card.profession
-                }}
-              </el-descriptions-item>
-              <el-descriptions-item label="基础属性：">
-                {{
-                  card.baseAttr
-                }}
-              </el-descriptions-item>
-            </el-descriptions>
-          </el-card>
+          <AttributeState @click="chooseCard(card)" :card="card" :showDel="true" />
         </el-col>
 
         <el-col :xs="24" :sm="12" :md="8" :lg="6" :xl="4">

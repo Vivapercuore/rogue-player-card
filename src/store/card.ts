@@ -67,6 +67,14 @@ const store = {
                 s.cards.push(cardData)
             }
         },
+        deleteCard(s: NonNeverState<typeof state>, cardData: RogueCard) {
+            const i = _.findIndex(s.cards, c => c.name === cardData.name)
+            if (i >= 0) {
+                s.cards.splice(i, 1)
+                console.log('deleteCard', s.cards.length)
+                localStorage.removeItem(`card:${cardData.name}`)
+            }
+        },
         changeCard(s: NonNeverState<typeof state>, cardData: RogueCard) {
             s.currentCard = cardData
         },
@@ -81,6 +89,10 @@ const store = {
         //保存卡
         saveCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardData: RogueCard) {
             commit("saveCard", cardData)
+        },
+        //删除卡
+        deleteCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardData: RogueCard) {
+            commit("deleteCard", cardData)
         },
         createNewCard({ commit, dispatch }: { commit: Commit, dispatch: Dispatch }, cardData: RogueCard) {
             commit("createNewCard")
