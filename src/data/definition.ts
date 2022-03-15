@@ -15,10 +15,14 @@ export enum Materials {
     法器 = '法器',
 }
 export enum CDLevel {
+    passive = "被动效果"
+    none = "没有CD"
     fast = "1回合一次",
     short = "2回合一次",
     middle = "4回合一次",
     long = "每场战斗一次",
+    solong = "每两场战斗1次",
+    toolong = "每四场战斗1次",
 }
 
 
