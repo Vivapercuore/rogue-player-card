@@ -1,7 +1,7 @@
 {
   "name": "rogue-gamer",
   "title": "肉鸽角色卡",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
