@@ -79,6 +79,7 @@ const creatCard = () => {
     checkCrad().then(
         () => {
             store.dispatch("saveCard", currentCard)
+            router.push({ name: "card", params: { cardName: currentCard.name } });
         }
     ).catch(
         (errmsg) => {
